@@ -11,6 +11,25 @@
 #include <libwebrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_abs_send_time.h>
 #include <deque>
 
+/** 用于服务端的拥塞控制
+ * TransportCongestionControlServer类的作用:
+ * 	1. 收集来自发送端的网络反馈信息(如RTCP报文,包括Transport Feedback,REMB, NACK等)
+ *  2. 使用这些信息来估计网络状况 (如带宽、延迟等)
+ *  3. 根据估计结果调速发送速率、避免网络拥塞
+ * 	
+ * webrtc::RemoteBitrateEstimator
+ * 	是webRtc中用于估计远程带宽(即从发送端到接收端的可用带宽)的模块。它运行在接收端，通过分析收到的数据包的
+ * 时间信息(如到达时间、包大小等)来估计可用带宽
+ * 
+ * 在`TransportCongestionControlServer`中，它使用`webrtc::RemoteBitrateEstimator`来执行带宽估计,
+ * 并通过实现 `webrtc::RemoteBitrateEstimator::Listener`接口来接收估计结果
+ * 
+ * TransportCongestionControlServer的主要功能:
+ * 	1.接收包信息 每当收到一个RTP包，就会调用`incomingPacket`方法，传入包的时间戳、大小、到达时间等信息
+ * 	2.处理反馈结果 如有RTCP反馈 (Transport Feedback) 也传入上面的信息
+ * 	3.估计带宽
+ * 	4.通知监听者
+ */
 namespace RTC
 {
 	class TransportCongestionControlServer : public webrtc::RemoteBitrateEstimator::Listener,
