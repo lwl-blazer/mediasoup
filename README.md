@@ -113,17 +113,14 @@ You can support mediasoup by [sponsoring][sponsor] it. Thanks!
 
 
 
-fork原始仓库流程
+### fork原始仓库流程
 
-1.git clone 到本地
-2.添加 upstream 上流源头
-git remote add upstream https://github.com/versatica/mediasoup.git
-3.创建自己分支
-
-
-4.获取官方最新代码
-git fetch upstream
-
-5 合并到您的主分支
-git checkout main
-git merge upstream/main
+#### 1.git clone 到本地
+#### 2.添加 upstream 上流源头
+    git remote add upstream https://github.com/versatica/mediasoup.git
+#### 3.创建自己分支
+#### 4.获取官方最新代码
+    git fetch upstream
+#### 5 合并到您的主分支
+    git checkout main
+    git merge upstream/main
