@@ -7,6 +7,24 @@
 #include <optional>
 #include <vector>
 
+/**
+ * RateCalculator
+ * 功能:
+ * 	实时计算数据库速率 (比特率、包率)
+ * 	基于滑动时间窗口算法，避免瞬时波动影响
+ * 	支持自定义统计窗口
+ * 
+ */
+
+ /**
+  * 设计亮点:
+  * 	A. 高效滑动窗口
+  * 		时间复杂度O(1) 添加、查询均为常数时间
+  * 		空间优化 固定大小环形缓冲区(无动态内存分配)
+  * 	B. 动态窗口维护
+  * 	C. 避免重复计算
+  */
+
 namespace RTC
 {
 	// It is considered that the time source increases monotonically.
@@ -23,9 +41,9 @@ namespace RTC
 		  size_t windowSizeMs  = DefaultWindowSize,
 		  float scale          = DefaultBpsScale,
 		  uint16_t windowItems = DefaultWindowItems);
-
+			// 新增数据到当前时间桶
 		void Update(size_t size, uint64_t nowMs);
-
+			// 计算当前速率
 		uint32_t GetRate(uint64_t nowMs);
 
 		size_t GetBytes() const
@@ -36,13 +54,14 @@ namespace RTC
 		void Reset();
 
 	private:
+		// 淘汰过期数据(维护滑动窗口)
 		void RemoveOldData(uint64_t nowMs);
 
 	private:
 		struct BufferItem
 		{
-			size_t count{ 0u };
-			uint64_t time{ 0u };
+			size_t count{ 0u };  // 本时间段内的数据量 如字节数
+			uint64_t time{ 0u };	// 时间段起始时间戳
 		};
 
 	private:
@@ -51,11 +70,11 @@ namespace RTC
 		// Scale in which the rate is represented.
 		float scale{ DefaultBpsScale };
 		// Window Size (number of items).
-		uint16_t windowItems{ DefaultWindowItems };
+		uint16_t windowItems{ DefaultWindowItems };  // 时间窗口分割 将总窗口(如1000ms)分割为多个桶(如100个桶，每个桶10ms)
 		// Item Size (in milliseconds), calculated as: windowSizeMs / windowItems.
 		size_t itemSizeMs{ 0u };
 		// Buffer to keep data.
-		std::vector<BufferItem> buffer;
+		std::vector<BufferItem> buffer;   // 环形缓冲区
 		// Time (in milliseconds) for last item in the time window.
 		std::optional<uint64_t> newestItemStartTime{ std::nullopt };
 		// Index for the last item in the time window.
@@ -74,6 +93,13 @@ namespace RTC
 		std::optional<uint64_t> lastTime{ std::nullopt };
 	};
 
+	/***
+	 * RtpDataCounter类
+	 * 功能:
+	 *  专为RTP流量定制计数器
+	 * 	过滤无效数据 可选忽略纯填充包 (padding-only packet)
+	 * 	集成速率计算
+	 */
 	class RtpDataCounter
 	{
 	public:

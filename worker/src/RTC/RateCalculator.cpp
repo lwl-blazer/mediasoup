@@ -7,6 +7,7 @@
 #include <cmath>   // std::trunc()
 #include <cstring> // std::memset()
 
+
 namespace RTC
 {
 	RateCalculator::RateCalculator(size_t windowSizeMs, float scale, uint16_t windowItems)
