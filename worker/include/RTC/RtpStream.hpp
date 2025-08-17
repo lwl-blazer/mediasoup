@@ -19,6 +19,15 @@
 #include <string>
 #include <vector>
 
+/**
+ * 基础类
+ * 提供RTP流的基本功能（发送和接收)
+ * 管理公共属性：
+ * 		SSRC payload type 序列号 时间戳等
+ * 实现基本的RTP包处理逻辑
+ * 
+ */
+
 namespace RTC
 {
 	class RtpStream

@@ -8,6 +8,19 @@
 #include "handles/TimerHandle.hpp"
 #include <vector>
 
+/***
+ * 继承自RTPStream
+ * 专门处理接收端的RTP流
+ * 主要功能:
+ * 	* 包乱序重排 -- 处理网络乱序到达的包
+ * 	* 丢包检测  -- 通过序列号连续性检测丢包
+ * 	* 抖动计算  -- Jitter
+ *  * 比特率计算 -- 接收比特率统计
+ * 	* 生成NACK  -- 当检测到丢包时，生成NACK请求
+ * 	* 关键帧检测 -- 用于视频流的快速恢复
+ * 
+ */
+
 namespace RTC
 {
 	class RtpStreamRecv : public RTC::RtpStream,
