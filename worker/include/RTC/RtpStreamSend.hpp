@@ -6,6 +6,18 @@
 #include "RTC/RtpStream.hpp"
 #include "RTC/SharedRtpPacket.hpp"
 
+
+/**
+ * Recv  	专注接收质量分析
+ * Send		专注发送优化
+ * 
+ * Producer / Consumer 中介者协调， 避免Recv/Send直接依赖
+ * 
+ * 把Producer比作'水龙头'，接收水源(媒体流)
+ * Router是‘水管分配器’
+ * Consumer则是‘分水阀’ 控制水流向哪个终端
+ * * */
+
 namespace RTC
 {
 	class RtpStreamSend : public RTC::RtpStream

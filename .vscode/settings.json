@@ -10,6 +10,7 @@
         "new": "cpp",
         "typeinfo": "cpp",
         "unordered_map": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "regex": "cpp"
     }
 }
