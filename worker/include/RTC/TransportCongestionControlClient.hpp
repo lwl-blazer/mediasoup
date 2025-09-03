@@ -15,6 +15,16 @@
 #include <libwebrtc/modules/pacing/packet_router.h>
 #include <deque>
 
+/***
+ * TransportCongestionControlClient
+ * 这是Mediasoup与拥塞控制算法 的桥梁 它内部封装了WebRtc的GoogCcNetworkController或 BbrNetworkController等算法
+ * 
+ * 输入：
+ * 	它接收来自多个消费者的 ​​RTCP Receiver Reports (RR)​​。作为 SFU，Mediasoup 会​​聚合​​所有下行流的反馈信息，综合判断整个出口链路的拥塞状态
+ * 输出:
+ * 	它计算出一個全局的或针对特定流的 ​​目标发送码率​​。这个码率是 Pacer 工作的根本依据
+ */
+
 namespace RTC
 {
 	constexpr uint32_t TransportCongestionControlMinOutgoingBitrate{ 30000u };
