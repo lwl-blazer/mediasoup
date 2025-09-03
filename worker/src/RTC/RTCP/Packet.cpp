@@ -47,6 +47,13 @@ namespace RTC
 
 			while (len > 0u)
 			{
+
+				/***
+				 * 在实现RTCP解析的时候，需要：
+				 * 1.首先根据RTCP包的PT字段来判断它是RTPFB(205) PSFB(206) 还是SR/RR/SDES/BYE
+				 * 2.如果是反馈报文，再读取其FMT(Feedback message type) 字段来确定具体的报文类型（如PLI,NACK)等
+				 * 3.根据 FMT去解析报文内部特定的格式和内容
+				 */
 				if (!Packet::IsRtcp(data, len))
 				{
 					MS_WARN_TAG(rtcp, "data is not a RTCP packet");
@@ -151,6 +158,7 @@ namespace RTC
 						current = nullptr;
 					}
 				}
+				
 
 				if (!current)
 				{
