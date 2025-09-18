@@ -11,6 +11,7 @@
         "typeinfo": "cpp",
         "unordered_map": "cpp",
         "tuple": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "istream": "cpp"
     }
 }
